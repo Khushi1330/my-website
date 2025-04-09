@@ -6,9 +6,13 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -17,13 +21,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up GitHub Pages
-        uses: actions/configure-pages@v2
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
-      - name: Upload HTML/CSS to GitHub Pages
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: '.'
+          path: .  # 👈 This must match your index.html location
 
-      - name: Deploy site
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
